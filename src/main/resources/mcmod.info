@@ -1,0 +1,16 @@
+[
+  {
+    "modid": "chatsaver",
+    "name": "Chat Saver",
+    "description": "A mod which saves chat when switching worlds.",
+    "version": "${version}",
+    "mcversion": "${mcversion}",
+    "url": "",
+    "updateUrl": "",
+    "authorList": ["Reflxction"],
+    "credits": "Reflxction",
+    "logoFile": "",
+    "screenshots": [],
+    "dependencies": []
+  }
+]
