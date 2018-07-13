@@ -24,6 +24,8 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.reflxction.chatsaver.proxy.IProxy;
+import net.reflxction.chatsaver.saver.Saver;
+import net.reflxction.chatsaver.saver.SaverImpl;
 import net.reflxction.chatsaver.utils.Reference;
 
 import java.io.File;
@@ -49,7 +51,9 @@ public class ChatSaver {
             clientSide = Reference.CLIENT_PROXY,
             serverSide = Reference.SERVER_PROXY
     )
-    private IProxy proxy;
+    private static IProxy proxy;
+
+    private static Saver saver = new SaverImpl();
 
     /*
      * Initialize variables here
@@ -104,6 +108,10 @@ public class ChatSaver {
 
     public static Configuration getConfig() {
         return config;
+    }
+
+    public static Saver getSaver() {
+        return saver;
     }
 
 }

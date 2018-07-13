@@ -15,11 +15,22 @@
  */
 package net.reflxction.chatsaver.proxy;
 
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraftforge.client.ClientCommandHandler;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.event.*;
 import net.reflxction.chatsaver.commands.CSCommand;
+import net.reflxction.chatsaver.events.PlayerSwitchWorldEvent;
+import net.reflxction.chatsaver.listeners.KeybindListener;
+import net.reflxction.chatsaver.listeners.PlayerSwitchWorldListener;
+import net.reflxction.chatsaver.listeners.TickTracker;
+import org.lwjgl.input.Keyboard;
 
 public class ClientProxy implements IProxy {
+
+    // Mod bindings
+    private static KeyBinding[] bindings;
 
     /**
      * Called before the mod is fully initialized
@@ -38,7 +49,21 @@ public class ClientProxy implements IProxy {
      */
     @Override
     public void init(FMLInitializationEvent event) {
+        // Register bindings
+        bindings = new KeyBinding[2];
+        bindings[0] = new KeyBinding("Open last text", Keyboard.KEY_U, "ChatSaver");
+        bindings[1] = new KeyBinding("Clear text", Keyboard.KEY_Y, "ChatSaver");
+        for (KeyBinding binding : bindings) {
+            ClientRegistry.registerKeyBinding(binding);
+        }
 
+        // Registries for event posts
+        MinecraftForge.EVENT_BUS.register(new PlayerSwitchWorldEvent());
+
+        // Registries for event listeners
+        MinecraftForge.EVENT_BUS.register(new TickTracker());
+        MinecraftForge.EVENT_BUS.register(new PlayerSwitchWorldListener());
+        MinecraftForge.EVENT_BUS.register(new KeybindListener());
     }
 
 
@@ -61,5 +86,19 @@ public class ClientProxy implements IProxy {
     @Override
     public void serverStarting(FMLServerStartingEvent event) {
         event.registerServerCommand(new CSCommand());
+    }
+
+    /**
+     * @return The key binding for opening text
+     */
+    public static KeyBinding getOpenBinding() {
+        return bindings[0];
+    }
+
+    /**
+     * @return The key binding for clearing text
+     */
+    public static KeyBinding getClearBinding() {
+        return bindings[1];
     }
 }
