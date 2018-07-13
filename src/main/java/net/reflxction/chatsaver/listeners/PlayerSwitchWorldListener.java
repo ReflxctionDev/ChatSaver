@@ -15,36 +15,34 @@
  */
 package net.reflxction.chatsaver.listeners;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.reflxction.chatsaver.ChatSaver;
 import net.reflxction.chatsaver.events.PlayerSwitchWorldEvent;
-import net.reflxction.chatsaver.utils.ChatColor;
-import net.reflxction.chatsaver.utils.Reference;
+import net.reflxction.chatsaver.utils.MessageManager.Notification;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Listener for {@link net.reflxction.chatsaver.events.PlayerSwitchWorldEvent}
  */
-@SuppressWarnings("SameParameterValue")
 public class PlayerSwitchWorldListener {
 
     @SubscribeEvent
     public void onPlayerSwitchWorld(PlayerSwitchWorldEvent event) {
-        if(!ChatSaver.getSaver().isCleared()) {
-            sendMessage("&aYour chat has been saved since the last time it was closed when switching. To get it back, click on the key-bind you've set &b(Default: &cU&b).");
+        if (ChatSaver.getSettings().isEnabled()) {
+            if (ChatSaver.getSaver().hasContent()) {
+                if (ChatSaver.getMessageManager().allowSendNotification()) {
+                    ChatSaver.getMessageManager().sendNotification(Notification.WORLD_SWITCHED);
+                    ChatSaver.getMessageManager().setAllowSendNotification(false);
+                    new Timer().schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            ChatSaver.getMessageManager().setAllowSendNotification(true);
+                        }
+                    }, 6000);
+                }
+            }
         }
     }
-
-    /**
-     * Sends a text message to the client
-     *
-     * @param text Text to send, chat formatted
-     */
-    private void sendMessage(String text) {
-        if(Minecraft.getMinecraft().thePlayer != null) { // For safety :>
-            Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(Reference.PREFIX + ChatColor.format(text)));
-        }
-    }
-
 }

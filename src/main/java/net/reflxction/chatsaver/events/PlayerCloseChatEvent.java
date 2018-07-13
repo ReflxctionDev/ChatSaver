@@ -1,3 +1,5 @@
+package net.reflxction.chatsaver.events;
+
 /*
  * * Copyright 2018 github.com/ReflxctionDev
  *
@@ -13,21 +15,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.reflxction.chatsaver.utils;
 
-import net.reflxction.chatsaver.ChatSaver;
-
-public class ConfigManager {
-
-    /**
-     * Sets if the mod is enabled or not
-     *
-     * @param b Flag if it should be enabled or not
-     */
-    public  void setEnabled(boolean b) {
-        ChatSaver.setEnabled(b);
-        ChatSaver.getConfig().get("Enabled", "Enabled", true).set(b);
-        ChatSaver.getConfig().save();
-    }
-
+public class PlayerCloseChatEvent {
 }

@@ -23,8 +23,8 @@ public class SaverImpl implements Saver {
     // The text in the text field, before switching worlds
     private String text;
 
-    // Whether the saver was cleared or not
-    private boolean cleared;
+    // Whether the saver was hasContent or not
+    private boolean hasContent = true;
 
     /**
      * @return The text in the text field before switching worlds
@@ -42,7 +42,11 @@ public class SaverImpl implements Saver {
     @Override
     public void setText(String text) {
         this.text = text;
-        if (text.isEmpty()) cleared = true;
+        if (text.isEmpty()) {
+            hasContent = true;
+        } else {
+            hasContent = false;
+        }
     }
 
     /**
@@ -51,18 +55,18 @@ public class SaverImpl implements Saver {
     @Override
     public void clear() {
         setText("");
-        this.cleared = true;
+        this.hasContent = true;
 
     }
 
     /**
-     * Whether the saver was cleared or not
+     * Whether the saver was hasContent or not
      *
      * @return True if the saver is cleaned
      */
     @Override
-    public boolean isCleared() {
-        return cleared;
+    public boolean hasContent() {
+        return !hasContent;
     }
 
 }

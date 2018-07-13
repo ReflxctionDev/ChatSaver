@@ -45,6 +45,6 @@ public interface Saver {
      *
      * @return True if the saver is cleaned
      */
-    boolean isCleared();
+    boolean hasContent();
 
 }

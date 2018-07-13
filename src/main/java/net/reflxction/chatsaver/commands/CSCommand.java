@@ -21,8 +21,8 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
 import net.reflxction.chatsaver.ChatSaver;
+import net.reflxction.chatsaver.config.ConfigManager;
 import net.reflxction.chatsaver.utils.ChatColor;
-import net.reflxction.chatsaver.utils.ConfigManager;
 import net.reflxction.chatsaver.utils.Reference;
 
 import java.util.ArrayList;
@@ -42,13 +42,13 @@ public class CSCommand implements ICommand {
 
     @Override
     public String getCommandUsage(ICommandSender sender) {
-        return "/chatsaver toggle";
+        return "/chatsaver <toggle / notifications>";
     }
 
     @Override
     public List<String> getCommandAliases() {
         List<String> aliases = new ArrayList<>();
-        aliases.add("ic");
+        aliases.add("cs");
         return aliases;
     }
 
@@ -59,10 +59,17 @@ public class CSCommand implements ICommand {
                 sendMessage("&cIncorrect command usage. Try " + getCommandUsage(executor));
                 break;
             case 1:
-                if (args[0].equalsIgnoreCase("toggle")) {
-                    config.setEnabled(!ChatSaver.isEnabled());
-                    sendMessage(ChatSaver.isEnabled() ? "&aChatSaver has been enabled" : "&cChatSaver has been disabled");
+                switch (args[0]) {
+                    case "toggle":
+                        config.setEnabled(!ChatSaver.getSettings().isEnabled());
+                        sendMessage(ChatSaver.getSettings().isEnabled() ? "&aChatSaver has been enabled" : "&cChatSaver has been disabled");
+                        break;
+                    case "notifications":
+                        config.setNotifications(!ChatSaver.getSettings().sendNotifications());
+                        sendMessage(ChatSaver.getSettings().isEnabled() ? "&aNotifications have been enabled" : "&cNotifications have been disabled");
+                        break;
                 }
+                break;
         }
     }
 
@@ -75,7 +82,7 @@ public class CSCommand implements ICommand {
     public List<String> addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos) {
         List<String> tabs = new ArrayList<>();
         tabs.add("chatsaver");
-        tabs.add("ic");
+        tabs.add("cs");
         return tabs;
     }
 

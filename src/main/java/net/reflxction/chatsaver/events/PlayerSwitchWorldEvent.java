@@ -59,14 +59,12 @@ public class PlayerSwitchWorldEvent extends Event {
         return world;
     }
 
-    private Minecraft mc = Minecraft.getMinecraft();
-
     // Trigger for the event
     @SubscribeEvent
     public void onEntityJoinWorld(EntityJoinWorldEvent e) {
         if (e.entity instanceof EntityPlayer) {
             EntityPlayer player = ((EntityPlayer) e.entity);
-            if (player.equals(mc.thePlayer)) {
+            if(player.getName().equals(Minecraft.getMinecraft().thePlayer.getName())) {
                 PlayerSwitchWorldEvent event = new PlayerSwitchWorldEvent(player, e.world);
                 MinecraftForge.EVENT_BUS.post(event);
             }

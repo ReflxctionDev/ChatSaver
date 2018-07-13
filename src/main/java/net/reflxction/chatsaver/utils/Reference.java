@@ -33,7 +33,7 @@ public class Reference {
     public static final String ACCEPTED_VERSIONS = "[1.8.9]";
 
     // Mod prefix (for sending messages)
-    public static final String PREFIX = ChatColor.format("&c[&eChat SaverImpl&c] ");
+    public static final String PREFIX = ChatColor.format("&c[&eChat Saver&c] ");
 
     // Client proxy manager
     public static final String CLIENT_PROXY = "net.reflxction.chatsaver.proxy.ClientProxy";

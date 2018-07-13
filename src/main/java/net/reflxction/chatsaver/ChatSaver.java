@@ -23,9 +23,11 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.reflxction.chatsaver.config.Settings;
 import net.reflxction.chatsaver.proxy.IProxy;
 import net.reflxction.chatsaver.saver.Saver;
 import net.reflxction.chatsaver.saver.SaverImpl;
+import net.reflxction.chatsaver.utils.MessageManager;
 import net.reflxction.chatsaver.utils.Reference;
 
 import java.io.File;
@@ -44,8 +46,11 @@ public class ChatSaver {
     // Config for saving data
     private static Configuration config;
 
-    // If the mod is enabled
-    private static boolean enabled;
+    // Mod settings
+    private static Settings settings;
+
+    // Mod's message manager
+    private static MessageManager messageManager = new MessageManager();
 
     @SidedProxy(
             clientSide = Reference.CLIENT_PROXY,
@@ -60,7 +65,7 @@ public class ChatSaver {
      */
     static {
         config = new Configuration(new File("config/chat-saver.cfg"));
-        enabled = config.get("Enabled", "Enabled", true).getBoolean();
+        settings = new Settings();
     }
 
     /**
@@ -95,23 +100,20 @@ public class ChatSaver {
         proxy.serverStarting(event);
     }
 
-    /**
-     * @return If the mod is enabled
-     */
-    public static boolean isEnabled() {
-        return enabled;
-    }
-
-    public static void setEnabled(boolean enabled) {
-        ChatSaver.enabled = enabled;
-    }
-
     public static Configuration getConfig() {
         return config;
     }
 
     public static Saver getSaver() {
         return saver;
+    }
+
+    public static Settings getSettings() {
+        return settings;
+    }
+
+    public static MessageManager getMessageManager() {
+        return messageManager;
     }
 
 }
