@@ -24,7 +24,7 @@ import net.reflxction.chatsaver.ChatSaver;
  */
 public class MessageManager {
 
-    private boolean sendSwitchNotification = false;
+    private boolean sendSwitchNotification = true;
 
     /**
      * Sends a normal text message to the client

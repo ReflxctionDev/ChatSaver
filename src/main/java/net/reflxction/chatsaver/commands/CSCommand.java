@@ -66,7 +66,7 @@ public class CSCommand implements ICommand {
                         break;
                     case "notifications":
                         config.setNotifications(!ChatSaver.getSettings().sendNotifications());
-                        sendMessage(ChatSaver.getSettings().isEnabled() ? "&aNotifications have been enabled" : "&cNotifications have been disabled");
+                        sendMessage(ChatSaver.getSettings().sendNotifications() ? "&aNotifications have been enabled" : "&cNotifications have been disabled");
                         break;
                 }
                 break;
