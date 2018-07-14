@@ -16,7 +16,9 @@
 package net.reflxction.chatsaver.events;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -62,12 +64,21 @@ public class PlayerSwitchWorldEvent extends Event {
     // Trigger for the event
     @SubscribeEvent
     public void onEntityJoinWorld(EntityJoinWorldEvent e) {
-        if (e.entity instanceof EntityPlayer) {
-            EntityPlayer player = ((EntityPlayer) e.entity);
-            if(player.getName().equals(Minecraft.getMinecraft().thePlayer.getName())) {
-                PlayerSwitchWorldEvent event = new PlayerSwitchWorldEvent(player, e.world);
-                MinecraftForge.EVENT_BUS.post(event);
+        try {
+            if (e.entity instanceof EntityPlayerSP) {
+                EntityPlayerSP player = ((EntityPlayerSP) e.entity);
+                if (player.getName().equals(Minecraft.getMinecraft().thePlayer.getName())) {
+                    PlayerSwitchWorldEvent event = new PlayerSwitchWorldEvent(player, e.world);
+                    MinecraftForge.EVENT_BUS.post(event);
+                }
+            } else if (e.entity instanceof EntityPlayerMP) {
+                EntityPlayerMP player = (EntityPlayerMP) e.entity;
+                if (player.getPersistentID().equals(Minecraft.getMinecraft().thePlayer.getUniqueID())) {
+                    PlayerSwitchWorldEvent event = new PlayerSwitchWorldEvent(player, e.world);
+                    MinecraftForge.EVENT_BUS.post(event);
+                }
             }
+        } catch (NullPointerException ignored) {
         }
     }
 }
